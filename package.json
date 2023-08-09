@@ -1,15 +1,14 @@
 {
-    "name": "cli",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "name": "@robinjs/cli",
+    "version": "0.0.1",
+    "description": "RobinJS Framework - CLI",
     "bin": {
         "robinjs": "./dist/index.js"
     },
     "scripts": {
         "start": "ts-node src/index.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "link-cli": "npx tsc && npm link"
+        "link-cli": "npx tsc && npm unlink . && npm link"
     },
     "keywords": [],
     "author": "",
@@ -23,6 +22,7 @@
     "dependencies": {
         "@inquirer/prompts": "^3.0.2",
         "commander": "^11.0.0",
+        "create-vite": "^4.4.1",
         "vite": "^4.4.8"
     }
 }
