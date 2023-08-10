@@ -31,6 +31,7 @@ program
 program
     .command('dev')
     .description('Start the dev server')
+    .allowUnknownOption()
     .action(() => {
         executeCommandHandler('dev')
     })
@@ -38,6 +39,7 @@ program
 program
     .command('build')
     .description('Build the project')
+    .allowUnknownOption()
     .action(() => {
         executeCommandHandler('build')
     })
@@ -45,8 +47,9 @@ program
 program
     .command('start')
     .description('Serve the project')
+    .allowUnknownOption()
     .action(() => {
-        executeCommandHandler('prod')
+        executeCommandHandler('start')
     })
 
 program.parse(process.argv)

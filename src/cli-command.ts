@@ -6,6 +6,8 @@ import {PackageModifier} from './package-modifier'
 
 
 class CLI {
+    private readonly CONFIG_FILE_NAME = 'robin.config.ts'
+
     @command('create')
     createProject(projectName: string): void {
         const templatePath = path.resolve(__dirname, '../template/react-ts')
@@ -21,18 +23,26 @@ class CLI {
 
 
     @command('dev')
-    startDevServer(): void {
-        execSync(`npx vite`, {stdio: 'inherit'})
+    async startDevServer(): Promise<void> {
+        const config = require(path.resolve(process.cwd(), this.CONFIG_FILE_NAME))
+        const port = config.dev.port
+        const args = process.argv.slice(3).join(' ')
+        execSync(`npx vite --port ${port} ${args}`, {stdio: 'inherit'})
     }
 
+
     @command('build')
-    buildProject(projectName: string): void {
-        execSync(`npx vite build`, {stdio: 'inherit'})
+    buildProject(): void {
+        const args = process.argv.slice(3).join(' ')
+        execSync(`npx vite build ${args}`, {stdio: 'inherit'})
     }
 
     @command('start')
-    serveProject(projectName: string): void {
-        execSync(`npx vite preview`, {stdio: 'inherit'})
+    serveProject(): void {
+        const config = require(path.resolve(process.cwd(), this.CONFIG_FILE_NAME))
+        const port = config.production.port
+        const args = process.argv.slice(3).join(' ')
+        execSync(`npx vite preview --port ${port} ${args}`, {stdio: 'inherit'})
     }
 }
 
