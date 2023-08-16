@@ -4,5 +4,13 @@ module.exports = {
     },
     production: {
         port: 8080
+    },
+    build: {
+        postcss: {
+            plugins: {
+                autoprefixer: {}
+
+            }
+        }
     }
 }

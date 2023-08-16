@@ -25,8 +25,9 @@ class CLI {
     }
 
     @command('dev')
-    startDevServer(): void {
+    async startDevServer() {
         try {
+            this.writePostcssConfig()
             const config = require(path.resolve(process.cwd(), this.CONFIG_FILE_NAME))
             const port = config.dev.port
             const args = process.argv.slice(3).join(' ')
@@ -39,6 +40,7 @@ class CLI {
     @command('build')
     buildProject(): void {
         try {
+            this.writePostcssConfig()
             const args = process.argv.slice(3).join(' ')
             execSync(`npx vite build ${args}`, {stdio: 'inherit'})
         } catch (error: any) {
@@ -49,6 +51,7 @@ class CLI {
     @command('start')
     serveProject(): void {
         try {
+            this.writePostcssConfig()
             const config = require(path.resolve(process.cwd(), this.CONFIG_FILE_NAME))
             const port = config.production.port
             const args = process.argv.slice(3).join(' ')
@@ -65,6 +68,23 @@ class CLI {
             console.error(`Error executing ${methodName}:`, error.message)
         }
     }
+
+    private writePostcssConfig() {
+        try {
+            const config = require(path.resolve(process.cwd(), this.CONFIG_FILE_NAME))
+            const postcssConfig = config.build.postcss
+            const postcssConfigPath = path.resolve(process.cwd(), 'postcss.config.js')
+
+            const postcssConfigContent = `module.exports = ${JSON.stringify(postcssConfig, null, 2)}`
+            fs.writeFileSync(postcssConfigPath, postcssConfigContent)
+
+            console.log('postcss.config.js has been updated with the configuration from robin.config.js.')
+        } catch (error: any) {
+            this.handleCommandError('writePostcssConfig', error)
+        }
+    }
+
+
 }
 
 export const cli = new CLI()
